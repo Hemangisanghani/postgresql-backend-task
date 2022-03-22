@@ -68,7 +68,7 @@ const getPostById = (request, response) => {
   }
 
 
-//update user
+//update post
 const updatePost = (request, response) => {
     const post_id = parseInt(request.params.post_id)
     const { user_id, topicname, description } = request.body
@@ -112,7 +112,7 @@ const createPost = (request, response) => {
     })
   }
 
-//Delete User`
+//Delete Post
 const deletePost = (request, response) => {
     const post_id = parseInt(request.params.post_id)
   

@@ -3,7 +3,6 @@ const saltRounds = 10;
 const bcrypt = require('bcrypt'); // bcrypt
 const jwt = require("jsonwebtoken");
 
-
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
@@ -12,6 +11,26 @@ const pool = new Pool({
   password: 'user',
   port: 5432,
 })
+
+const query = `CREATE TABLE IF NOT EXISTS users (
+  user_id SERIAL PRIMARY KEY,
+  name VARCHAR(30) NOT NULL,
+  email VARCHAR(30) NOT NULL,
+  password TEXT NOT NULL,
+  user_avatar VARCHAR(255) NULL,
+  created_on TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(email)
+);`;
+
+pool.query(query, (err, response) => {
+if (err) {
+  console.error(err);
+  return;
+}
+console.log('Table is successfully created');
+});
+
 
 const protect = async (request, response, next) => {
   let token
@@ -44,25 +63,6 @@ const protect = async (request, response, next) => {
 
   next()
 }
-
-const query = `CREATE TABLE IF NOT EXISTS users (
-    user_id SERIAL PRIMARY KEY,
-    name VARCHAR(30) NOT NULL,
-    email VARCHAR(30) NOT NULL,
-    password TEXT NOT NULL,
-    user_avatar VARCHAR(255) NULL,
-    created_on TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    UNIQUE(email)
-  );`;
-
-pool.query(query, (err, response) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log('Table is successfully created');
-});
 
 async function isUserExists(email) {
   return new Promise(resolve => {

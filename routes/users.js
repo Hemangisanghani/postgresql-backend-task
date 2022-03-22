@@ -3,7 +3,6 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 
-
 const {
     getUsers,
     getUserById,
@@ -11,22 +10,19 @@ const {
     updateUser,
     deleteUser,
     login,
-} = require('../controlller.js/users')
+} = require('../controlller/users')
 
 const storage = multer.diskStorage({
     destination: function (request, file, cb) {
         cb(null, "public");
     },
     filename: function (request, file, cb) {
-        const filename =  file.fieldname + Date.now() + path.extname(file.originalname);
+        const filename = file.fieldname + Date.now() + path.extname(file.originalname);
         cb(null, filename);
     },
 });
 
 var upload = multer({ storage: storage });
-
-
-// }).single("file");
 
 router.route('/').get(getUsers);
 router.route('/:user_id').get(getUserById);

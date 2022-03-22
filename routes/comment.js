@@ -6,7 +6,7 @@ const{
     getCommentsByPostId,
     createComment,
     deleteComment
-}=require('../controlller.js/comment')
+}=require('../controlller/comment')
 
 router.route('/').get(getComments);
 router.route('/:post_id').get(getCommentsByPostId)
