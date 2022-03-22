@@ -35,12 +35,12 @@ const protect = async (request, response, next) => {
     response.send('Invalid Token')
   }
 
-  const freshUser = await users.findById(decoded.user_id)
+  const freshUser = await pool.query('SELECT * FROM users WHERE user_id = $1',[decoded.user_id]);
 
   if (!freshUser) {
     response.send('User does not exist')
   }
-  request.user= freshUser
+  request.user=freshUser
 
   next()
 }
