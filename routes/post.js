@@ -8,9 +8,10 @@ const {
     createPost,
     updatePost,
     deletePost
-} = require('../controlller/post')
+} = require('../controlller/post');
+const { protect } = require('../controlller/users');
 
-router.route('/').get(getAllPosts);
+router.route('/').get([protect],getAllPosts);
 router.route('/:user_id').get(getPostByUserId);
 router.route('/post/:post_id').get(getPostById)
 router.route('/post/:post_id').put(updatePost)

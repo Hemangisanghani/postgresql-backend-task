@@ -2,6 +2,8 @@ const { response, request,next } = require('express')
 const saltRounds = 10;
 const bcrypt = require('bcrypt'); // bcrypt
 const jwt = require("jsonwebtoken");
+const util = require('util');
+
 
 const Pool = require('pg').Pool
 const pool = new Pool({
@@ -28,9 +30,8 @@ if (err) {
   console.error(err);
   return;
 }
-console.log('Table is successfully created');
+console.log('Table Users is successfully created');
 });
-
 
 const protect = async (request, response, next) => {
   let token
@@ -46,12 +47,12 @@ const protect = async (request, response, next) => {
   }
   let decoded
   try {
-    decoded = await promisify(jwt.verify)(
+    decoded = await util.promisify(jwt.verify)(
       token,
       (JWT_LOGIN_TOKEN = 'qwertyuiopasdfghjklzxcvbnmqwert'),
     )
   } catch (e) {
-    response.send('Invalid Token')
+    response.send(e.message)
   }
 
   const freshUser = await pool.query('SELECT * FROM users WHERE user_id = $1',[decoded.user_id]);
@@ -121,10 +122,11 @@ const getUserById = (request, response) => {
 
 //create user
 const createUser = (request, response) => {
-  const file = request.file;
+  const file = request.file; // not getting this file //mara ma to upload thai jay 6 check kro brabr mara pn chalvu joiye ne tmaro j code 6 just hmna pull lidhu me hu tamne batavu mara ma skype open karo
+
   console.log(request.file)
   if (!file) {
-    res.status(200).jsonp({
+    response.status(200).jsonp({
       message: "Please upload your avatar",
     });
   }
@@ -274,4 +276,3 @@ module.exports = {
   login,
   protect
 }
-

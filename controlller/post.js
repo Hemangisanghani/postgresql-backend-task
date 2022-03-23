@@ -26,7 +26,7 @@ pool.query(query, (err, response) => {
         console.error(err);
         return;
     }
-    console.log('Table is successfully created');
+    console.log('Table Posts is successfully created');
 });
 
 
@@ -45,8 +45,8 @@ const getAllPosts = (request, response) => {
 //get posts of one User
 const getPostByUserId = (request, response) => {
     const user_id = parseInt(request.params.user_id)
-  
-    pool.query('SELECT us.post_id,us.topicname,us.description,re.name FROM posts  AS us JOIN users  AS re  ON us.user_id=re.user_id WHERE re.user_id = $1', [user_id], 
+
+    pool.query('SELECT us.post_id,us.topicname,us.description,re.name FROM posts  AS us JOIN users  AS re  ON us.user_id=re.user_id WHERE re.user_id = $1', [user_id],
     (error, results) => {
       if (error) {
         throw error
@@ -58,7 +58,7 @@ const getPostByUserId = (request, response) => {
   //get post
 const getPostById = (request, response) => {
     const post_id = parseInt(request.params.post_id)
-  
+
     pool.query('SELECT * FROM posts WHERE post_id = $1', [post_id], (error, results) => {
       if (error) {
         throw error
@@ -83,7 +83,7 @@ const updatePost = (request, response) => {
             response.status(200).json({
                 status: 'success',
                 data: `Post modified with post_id : ${post_id}`,
-              
+
             })
         }
     )
@@ -92,7 +92,7 @@ const updatePost = (request, response) => {
 //Add Post
 const createPost = (request, response) => {
     const { user_id,topicname,description} = request.body
-  
+
     if (!topicname || topicname.length === 0) {
       return response.status(400).json({ status: 'failed', message: 'TopicName is required.' });
     }
@@ -115,7 +115,7 @@ const createPost = (request, response) => {
 //Delete Post
 const deletePost = (request, response) => {
     const post_id = parseInt(request.params.post_id)
-  
+
     pool.query('DELETE FROM posts WHERE post_id = $1', [post_id], (error, results) => {
       if (error) {
         throw error
@@ -127,7 +127,7 @@ const deletePost = (request, response) => {
     })
   }
 
-  
+
 module.exports = {
     getAllPosts,
     getPostByUserId,

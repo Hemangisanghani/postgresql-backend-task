@@ -24,7 +24,7 @@ pool.query(query, (err, response) => {
     console.error(err);
     return;
   }
-  console.log('Table is successfully created');
+  console.log('Table Comments is successfully created');
 });
 
 //get comment by comment id
@@ -95,4 +95,3 @@ module.exports = {
   createComment,
   deleteComment
 };
-
